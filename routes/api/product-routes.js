@@ -75,7 +75,7 @@ router.put('/:id', (req, res) => {
           .map(tag_id => {
             return {
               product_id: req.params.id,
-              tag_id
+              tag_id,
             };
           });
         const deletedProductTags = productTags
