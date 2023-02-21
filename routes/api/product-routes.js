@@ -3,13 +3,18 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // gets all products
 router.get('/', async (req, res) => {
+  // Product.findAll({ includes: [Tag, Category] })
+  //   .then(product => { res.json(product) })
+  //   .catch(error => { console.log(error) })
   try {
     const productData = await Product.findAll({
       include: [
         { model: Category },
-        { model: Tag, 
-          through: ProductTag, 
-          as: "tags" }
+        {
+          model: Tag,
+          through: ProductTag,
+          as: "tags"
+        }
       ]
     })
     res.status(200).json(productData)
@@ -24,9 +29,11 @@ router.get('/:id', async (req, res) => {
     const productData = await Product.findByPk(req.params.id, {
       include: [
         { model: Category },
-        { model: Tag, 
-          through: ProductTag, 
-          as: "tags" }
+        {
+          model: Tag,
+          through: ProductTag,
+          as: "tags"
+        }
       ]
     })
     res.status(200).json(productData)
@@ -91,7 +98,7 @@ router.put('/:id', (req, res) => {
     .catch(err => {
       res.status(400).json(err);
     });
-  });
+});
 
 //Deletes a product by id
 router.delete('/:id', async (req, res) => {
@@ -104,7 +111,7 @@ router.delete('/:id', async (req, res) => {
     res.status(200).json(deleteProduct)
 
     if (!deleteProduct) {
-      res.status(404).json({message: 'This product does not exist.'})
+      res.status(404).json({ message: 'This product does not exist.' })
     }
   } catch (err) {
     res.status(500).json(err)
